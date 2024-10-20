@@ -12,6 +12,7 @@
         android:id="@+id/stepCounterTextView"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
         android:background="@android:color/darker_gray"
         android:gravity="center"
         android:minHeight="100dp"
@@ -20,6 +21,7 @@
         android:textSize="36sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -27,7 +29,7 @@
         android:id="@+id/timerTextView"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="52dp"
         android:background="@android:color/darker_gray"
         android:gravity="center"
         android:minHeight="100dp"
@@ -35,6 +37,7 @@
         android:textColor="@android:color/black"
         android:textSize="36sp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/stepCounterTextView" />
 
@@ -42,8 +45,8 @@
         android:id="@+id/buttonLayout"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
         android:orientation="horizontal"
+        app:layout_constraintBottom_toTopOf="@+id/stopButton"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/timerTextView">
@@ -51,32 +54,39 @@
         <Button
             android:id="@+id/startButton"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="176dp"
             android:layout_marginEnd="8dp"
             android:layout_weight="1"
+            android:background="@drawable/rectangular_button"
             android:text="Start"
-            android:textSize="18sp" />
+            android:textColor="@android:color/white"
+            android:textSize="45sp" />
 
         <Button
             android:id="@+id/pauseResumeButton"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="176dp"
             android:layout_marginStart="8dp"
             android:layout_weight="1"
+            android:background="@drawable/rectangular_button"
             android:text="Pause"
-            android:textSize="18sp" />
+            android:textColor="@android:color/white"
+            android:textSize="45sp" />
 
     </LinearLayout>
 
     <Button
         android:id="@+id/stopButton"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
+        android:layout_height="80dp"
+        android:layout_marginBottom="24dp"
+        android:background="@drawable/rectangular_button"
         android:text="STOP"
-        android:textSize="18sp"
+        android:textColor="@android:color/white"
+        android:textSize="50sp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/buttonLayout" />
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
