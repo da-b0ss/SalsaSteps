@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">SalsaSteps</string>
+    <string-array name="sort_options">
+        <item>Ascending Difficulty</item>
+        <item>Descending Difficulty</item>
+    </string-array>
 </resources>
