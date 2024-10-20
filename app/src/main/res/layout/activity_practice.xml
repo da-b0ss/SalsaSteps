@@ -60,7 +60,7 @@
             android:background="@drawable/rectangular_button"
             android:text="Start"
             android:textColor="@android:color/white"
-            android:textSize="45sp" />
+            android:textSize="35sp" />
 
         <Button
             android:id="@+id/pauseResumeButton"
@@ -71,7 +71,7 @@
             android:background="@drawable/rectangular_button"
             android:text="Pause"
             android:textColor="@android:color/white"
-            android:textSize="45sp" />
+            android:textSize="35sp" />
 
     </LinearLayout>
 
