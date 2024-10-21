@@ -48,12 +48,12 @@ public class LibraryActivity extends AppCompatActivity {
 
     private List<DanceMove> createDanceMoves() {
         List<DanceMove> moves = new ArrayList<>();
-        moves.add(new DanceMove("Basic Step", "Beginner", "1.mp4"));
-        moves.add(new DanceMove("Cross Body Lead", "Intermediate", "2.mp4"));
-        moves.add(new DanceMove("Cuban Motion", "Beginner", "3.mp4"));
-        moves.add(new DanceMove("Suzie Q", "Intermediate", "4.mp4"));
-        moves.add(new DanceMove("Carousel", "Advanced", "5.mp4"));
-        moves.add(new DanceMove("Sombrero", "Advanced", "6.mp4"));
+        moves.add(new DanceMove("Basic Step", "Beginner", "video1.mp4"));
+        moves.add(new DanceMove("Cross Body Lead", "Intermediate", "video2.mp4"));
+        moves.add(new DanceMove("Cuban Motion", "Beginner", "video3.mp4"));
+        moves.add(new DanceMove("Suzie Q", "Intermediate", "video4.mp4"));
+        moves.add(new DanceMove("Carousel", "Advanced", "video5.mp4"));
+        moves.add(new DanceMove("Sombrero", "Advanced", "video6.mp4"));
         return moves;
     }
 
