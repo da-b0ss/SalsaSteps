@@ -12,7 +12,8 @@
         android:layout_height="match_parent"
         android:layout_marginTop="128dp"
         android:orientation="horizontal"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent"
+        tools:layout_editor_absoluteX="0dp">
 
         <Space
             android:layout_width="wrap_content"
@@ -35,13 +36,29 @@
                 android:id="@+id/button"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Practice Now" />
+                android:background="@drawable/rectangular_button"
+                android:backgroundTint="#d16506"
+                android:backgroundTintMode="multiply"
+                android:drawableTint="#d16506"
+                android:drawableTintMode="multiply"
+                android:text="Practice Now"
+                android:textColorLink="#FFFFFF"
+                android:visibility="visible"
+                tools:visibility="visible" />
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="29dp"
+                android:layout_weight="1" />
 
             <Button
                 android:id="@+id/button2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Dance Move Library" />
+                android:background="@drawable/rectangular_button"
+                android:foregroundTint="#3F51B5"
+                android:text="Dance Move Library"
+                android:textColorLink="#711919" />
 
         </LinearLayout>
 
