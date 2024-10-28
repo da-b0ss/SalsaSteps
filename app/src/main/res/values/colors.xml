@@ -4,4 +4,5 @@
     <color name="white">#FFFFFFFF</color>
     <color name="star_unselected">#BDBDBD</color>
     <color name="star_selected">#FFD700</color>
+    <color name="orange">#d16506</color>
 </resources>

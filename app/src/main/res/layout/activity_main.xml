@@ -37,7 +37,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/rectangular_button"
-                android:text="Practice Now" />
+                android:backgroundTint="#d16506"
+                android:backgroundTintMode="multiply"
+                android:drawableTint="#d16506"
+                android:drawableTintMode="multiply"
+                android:text="Practice Now"
+                android:textColorLink="#FFFFFF"
+                android:visibility="visible"
+                tools:visibility="visible" />
 
             <Space
                 android:layout_width="match_parent"
@@ -49,7 +56,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/rectangular_button"
-                android:text="Dance Move Library" />
+                android:foregroundTint="#3F51B5"
+                android:text="Dance Move Library"
+                android:textColorLink="#711919" />
 
         </LinearLayout>
 
