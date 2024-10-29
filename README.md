@@ -20,9 +20,6 @@ SalsaStep is an Android application designed to help salsa dancers track their p
 - Instructional video links for each move
 - Progress tracking for individual moves
 
-## Screenshots
-[Add your app screenshots here]
-
 ## Technical Details
 
 ### Requirements
