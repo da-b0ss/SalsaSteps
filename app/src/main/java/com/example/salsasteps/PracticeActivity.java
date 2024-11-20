@@ -1,10 +1,12 @@
 package com.example.salsasteps;
 
 import android.content.Context;
+import android.content.Intent;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.widget.Button;
@@ -41,6 +43,9 @@ public class PracticeActivity extends AppCompatActivity implements SensorEventLi
     private Handler timerHandler = new Handler();
     private String selectedDate;
     private SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+    private static final int EXPORT_REQUEST_CODE = 123;
+    private FileManager fileManager;
+    private Button exportButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,6 +57,27 @@ public class PracticeActivity extends AppCompatActivity implements SensorEventLi
         setupListeners();
         selectedDate = dateFormat.format(new Date());
         updateSelectedDateStats();
+        fileManager = new FileManager(this);
+        exportButton = findViewById(R.id.exportButton);
+        exportButton.setOnClickListener(v -> initiateExport());
+
+    }
+
+    private void initiateExport() {
+        Intent intent = fileManager.createExportIntent();
+        startActivityForResult(intent, EXPORT_REQUEST_CODE);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == EXPORT_REQUEST_CODE && resultCode == RESULT_OK) {
+            if (data != null && data.getData() != null) {
+                Uri uri = data.getData();
+                fileManager.exportCSV(uri);
+                Toast.makeText(this, "Progress exported successfully!", Toast.LENGTH_SHORT).show();
+            }
+        }
     }
 
     private void setupViews() {
@@ -120,7 +146,9 @@ public class PracticeActivity extends AppCompatActivity implements SensorEventLi
             } else {
                 totalDuration = elapsedTimeBeforePause;
             }
-            dbHelper.addSession(dateFormat.format(new Date()), totalDuration, stepCount);
+            String currentDate = dateFormat.format(new Date());
+            dbHelper.addSession(currentDate, totalDuration, stepCount);
+            fileManager.saveSession(currentDate, totalDuration, stepCount);
             updateSelectedDateStats();
         }
 
@@ -157,6 +185,7 @@ public class PracticeActivity extends AppCompatActivity implements SensorEventLi
 
     private void deleteCurrentDateRecords() {
         dbHelper.deleteSessionsByDate(selectedDate);
+        fileManager.deleteSessionsByDate(selectedDate);
         updateSelectedDateStats();
         Toast.makeText(this, "Records deleted for " + selectedDate, Toast.LENGTH_SHORT).show();
     }
