@@ -1,4 +1,4 @@
-package com.example.salsastepstest;
+package com.example.salsasteps;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
