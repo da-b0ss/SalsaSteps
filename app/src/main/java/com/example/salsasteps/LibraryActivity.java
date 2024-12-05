@@ -1,4 +1,4 @@
-package com.example.salsasteps;
+package com.example.salsastepstest;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -25,6 +25,7 @@ public class LibraryActivity extends AppCompatActivity {
     private RecyclerView movesRecyclerView;
     private MoveAdapter moveAdapter;
     private SharedPreferences sharedPreferences;
+    private SharedPreferences favoritePreferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,6 +33,7 @@ public class LibraryActivity extends AppCompatActivity {
         setContentView(R.layout.activity_library);
 
         sharedPreferences = getSharedPreferences("DanceMoveRatings", MODE_PRIVATE);
+        favoritePreferences = getSharedPreferences("FavoriteRatings", MODE_PRIVATE);
 
         movesRecyclerView = findViewById(R.id.movesRecyclerView);
         movesRecyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -98,6 +100,20 @@ public class LibraryActivity extends AppCompatActivity {
                 }
             });
 
+            // Load the saved favorite ratings
+            float favoriteRating = favoritePreferences.getFloat(move.name, 0f);
+            holder.favoriteBar.setRating(favoriteRating);
+
+            holder.favoriteBar.setOnRatingBarChangeListener((ratingBar, rating, fromUser) -> {
+                if (fromUser) {
+                    // Save the new favorite
+                    SharedPreferences.Editor favEditor = favoritePreferences.edit();
+                    favEditor.putFloat(move.name, rating);
+                    favEditor.apply();
+                    Toast.makeText(LibraryActivity.this, "Favorite saved", Toast.LENGTH_SHORT).show();
+                }
+            });
+
             holder.watchVideoButton.setOnClickListener(v -> {
                 Intent intent = new Intent(Intent.ACTION_VIEW);
                 intent.setData(Uri.parse(move.videoUrl));
@@ -119,6 +135,7 @@ public class LibraryActivity extends AppCompatActivity {
             TextView nameTextView;
             TextView difficultyTextView;
             RatingBar ratingBar;
+            RatingBar favoriteBar;
             Button watchVideoButton;
 
             MoveViewHolder(View itemView) {
@@ -126,6 +143,7 @@ public class LibraryActivity extends AppCompatActivity {
                 nameTextView = itemView.findViewById(R.id.nameTextView);
                 difficultyTextView = itemView.findViewById(R.id.difficultyTextView);
                 ratingBar = itemView.findViewById(R.id.ratingBar);
+                favoriteBar = itemView.findViewById(R.id.favoriteBar);
                 watchVideoButton = itemView.findViewById(R.id.watchVideoButton);
             }
         }
