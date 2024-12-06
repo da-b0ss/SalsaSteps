@@ -8,11 +8,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.RatingBar;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -58,19 +60,23 @@ public class LibraryActivity extends AppCompatActivity {
         String name;
         String difficulty;
         String videoUrl;
+        String notes;
 
         DanceMove(String name, String difficulty, String videoUrl) {
             this.name = name;
             this.difficulty = difficulty;
             this.videoUrl = videoUrl;
+            this.notes = "";
         }
     }
 
     private class MoveAdapter extends RecyclerView.Adapter<MoveAdapter.MoveViewHolder> {
         private List<DanceMove> moves;
+        private SharedPreferences notesPreferences;
 
         MoveAdapter(List<DanceMove> moves) {
             this.moves = moves;
+            this.notesPreferences = getSharedPreferences("DanceMoveNotes", MODE_PRIVATE);
         }
 
         @NonNull
@@ -78,6 +84,11 @@ public class LibraryActivity extends AppCompatActivity {
         public MoveViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
             View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_dance_move, parent, false);
             return new MoveViewHolder(view);
+        }
+
+        @Override
+        public int getItemCount() {
+            return moves.size();
         }
 
         @Override
@@ -92,7 +103,6 @@ public class LibraryActivity extends AppCompatActivity {
 
             holder.ratingBar.setOnRatingBarChangeListener((ratingBar, rating, fromUser) -> {
                 if (fromUser) {
-                    // Save the new rating
                     SharedPreferences.Editor editor = sharedPreferences.edit();
                     editor.putFloat(move.name, rating);
                     editor.apply();
@@ -106,7 +116,6 @@ public class LibraryActivity extends AppCompatActivity {
 
             holder.favoriteBar.setOnRatingBarChangeListener((ratingBar, rating, fromUser) -> {
                 if (fromUser) {
-                    // Save the new favorite
                     SharedPreferences.Editor favEditor = favoritePreferences.edit();
                     favEditor.putFloat(move.name, rating);
                     favEditor.apply();
@@ -114,21 +123,42 @@ public class LibraryActivity extends AppCompatActivity {
                 }
             });
 
+            // Add notes button click handler
+            holder.notesButton.setOnClickListener(v -> showNotesDialog(move));
+
             holder.watchVideoButton.setOnClickListener(v -> {
                 Intent intent = new Intent(Intent.ACTION_VIEW);
                 intent.setData(Uri.parse(move.videoUrl));
-                intent.setPackage("com.android.chrome");  // Prefer Chrome if available
+                intent.setPackage("com.android.chrome");
                 if (intent.resolveActivity(getPackageManager()) == null) {
-                    // If Chrome is not installed, fall back to the default browser
                     intent.setPackage(null);
                 }
                 startActivity(intent);
             });
         }
 
-        @Override
-        public int getItemCount() {
-            return moves.size();
+        private void showNotesDialog(DanceMove move) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(LibraryActivity.this);
+            View dialogView = LayoutInflater.from(LibraryActivity.this)
+                    .inflate(R.layout.dialog_notes, null);
+            EditText notesEdit = dialogView.findViewById(R.id.notesEditText);
+
+            // Load existing notes
+            String savedNotes = notesPreferences.getString(move.name, "");
+            notesEdit.setText(savedNotes);
+
+            builder.setView(dialogView)
+                    .setTitle("Notes for " + move.name)
+                    .setPositiveButton("Save", (dialog, which) -> {
+                        String notes = notesEdit.getText().toString();
+                        SharedPreferences.Editor editor = notesPreferences.edit();
+                        editor.putString(move.name, notes);
+                        editor.apply();
+                        move.notes = notes;
+                        Toast.makeText(LibraryActivity.this, "Notes saved", Toast.LENGTH_SHORT).show();
+                    })
+                    .setNegativeButton("Cancel", null)
+                    .show();
         }
 
         class MoveViewHolder extends RecyclerView.ViewHolder {
@@ -137,6 +167,7 @@ public class LibraryActivity extends AppCompatActivity {
             RatingBar ratingBar;
             RatingBar favoriteBar;
             Button watchVideoButton;
+            Button notesButton;
 
             MoveViewHolder(View itemView) {
                 super(itemView);
@@ -145,6 +176,7 @@ public class LibraryActivity extends AppCompatActivity {
                 ratingBar = itemView.findViewById(R.id.ratingBar);
                 favoriteBar = itemView.findViewById(R.id.favoriteBar);
                 watchVideoButton = itemView.findViewById(R.id.watchVideoButton);
+                notesButton = itemView.findViewById(R.id.notesButton);
             }
         }
     }

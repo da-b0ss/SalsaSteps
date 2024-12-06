@@ -20,6 +20,8 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 import java.util.concurrent.TimeUnit;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 
 public class PracticeActivity extends AppCompatActivity implements SensorEventListener {
 
@@ -43,7 +45,7 @@ public class PracticeActivity extends AppCompatActivity implements SensorEventLi
     private Handler timerHandler = new Handler();
     private String selectedDate;
     private SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
-    private static final int EXPORT_REQUEST_CODE = 123;
+    private ActivityResultLauncher<Intent> exportLauncher;
     private FileManager fileManager;
     private Button exportButton;
 
@@ -51,6 +53,21 @@ public class PracticeActivity extends AppCompatActivity implements SensorEventLi
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_practice);
+
+        // Initialize the launcher
+        exportLauncher = registerForActivityResult(
+                new ActivityResultContracts.StartActivityForResult(),
+                result -> {
+                    if (result.getResultCode() == RESULT_OK) {
+                        Intent data = result.getData();
+                        if (data != null && data.getData() != null) {
+                            Uri uri = data.getData();
+                            fileManager.exportCSV(uri);
+                            Toast.makeText(this, "Progress exported successfully!", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                }
+        );
 
         dbHelper = new PracticeSessionDbHelper(this);
         setupViews();
@@ -60,24 +77,11 @@ public class PracticeActivity extends AppCompatActivity implements SensorEventLi
         fileManager = new FileManager(this);
         exportButton = findViewById(R.id.exportButton);
         exportButton.setOnClickListener(v -> initiateExport());
-
     }
 
     private void initiateExport() {
         Intent intent = fileManager.createExportIntent();
-        startActivityForResult(intent, EXPORT_REQUEST_CODE);
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == EXPORT_REQUEST_CODE && resultCode == RESULT_OK) {
-            if (data != null && data.getData() != null) {
-                Uri uri = data.getData();
-                fileManager.exportCSV(uri);
-                Toast.makeText(this, "Progress exported successfully!", Toast.LENGTH_SHORT).show();
-            }
-        }
+        exportLauncher.launch(intent);
     }
 
     private void setupViews() {
