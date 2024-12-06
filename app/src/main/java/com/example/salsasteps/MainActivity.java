@@ -49,7 +49,6 @@ public class MainActivity extends AppCompatActivity {
 
         Button practiceButton = findViewById(R.id.button);
         Button libraryButton = findViewById(R.id.button2);
-        Button leaderboardButton = findViewById(R.id.button3);
 
         practiceButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -67,13 +66,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        leaderboardButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, LeaderboardActivity.class);
-                startActivity(intent);
-            }
-        });
+        
     }
 
     private void setupMoveOfTheDay() {
