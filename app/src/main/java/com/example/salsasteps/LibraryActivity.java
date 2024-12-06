@@ -116,10 +116,30 @@ public class LibraryActivity extends AppCompatActivity {
 
             holder.favoriteBar.setOnRatingBarChangeListener((ratingBar, rating, fromUser) -> {
                 if (fromUser) {
+                    // Get current rating before change
+                    float currentRating = favoritePreferences.getFloat(move.name, 0f);
+                    float newRating;
+                    String message;
+
+                    // If it was favorited (rating 1), unfavorite it (rating 0)
+                    // If it wasn't favorited (rating 0), favorite it (rating 1)
+                    if (currentRating > 0) {
+                        newRating = 0f;
+                        message = "Removed from favorites";
+                    } else {
+                        newRating = 1f;
+                        message = "Added to favorites";
+                    }
+
+                    // Update the UI
+                    ratingBar.setRating(newRating);
+
+                    // Save to preferences
                     SharedPreferences.Editor favEditor = favoritePreferences.edit();
-                    favEditor.putFloat(move.name, rating);
+                    favEditor.putFloat(move.name, newRating);
                     favEditor.apply();
-                    Toast.makeText(LibraryActivity.this, "Favorite saved", Toast.LENGTH_SHORT).show();
+
+                    Toast.makeText(LibraryActivity.this, message, Toast.LENGTH_SHORT).show();
                 }
             });
 
