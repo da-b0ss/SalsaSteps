@@ -107,11 +107,6 @@ app/
    - Rate your progress on each move
    - Watch instructional videos for moves
 
-
-## License
-
-This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
-
 ## Acknowledgments
 
 - Dance move tutorials sourced from various salsa instructors (links provided in app)
